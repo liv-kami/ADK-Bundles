@@ -1,5 +1,6 @@
 # ADK-Bundles
 Here is a copy of the default config, it should be fairly self explanitory
+```
 world-whitelist:
   - world
   - world_nether
@@ -32,4 +33,4 @@ bundle-hide-enchantments: true
 mega-bundle-enchantments:
   - DURABILITY:1
   - FIRE_ASPECT:2
-mega-bundle-hide-enchantments: true
+mega-bundle-hide-enchantments: true```
