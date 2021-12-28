@@ -2,6 +2,9 @@ package xyz.livdoesdevstuf.main;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,7 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainClass extends JavaPlugin implements Listener {
+public class MainClass extends JavaPlugin implements Listener, CommandExecutor {
 
     public static Plugin plugin;
     public static Plugin getPlugin() {return plugin;}
@@ -32,6 +35,7 @@ public class MainClass extends JavaPlugin implements Listener {
         }
         getLogger().info("ADK-Bundles >>> Plugin Enabled");
         plugin.getServer().getPluginManager().registerEvents(this, this);
+        getCommand("adkbundlereload").setExecutor(this);
         saveDefaultConfig();
         reloadConfig();
     }
@@ -78,6 +82,7 @@ public class MainClass extends JavaPlugin implements Listener {
 
         //This goes through each craft matrix and checks that they are equal to the recipe given?? needs testing
         int num = 0;
+        boolean otherMega = true;
         for(String s : recipeInfo) {
             if(craftMatrix[num] == null) {
                 return;
@@ -94,6 +99,9 @@ public class MainClass extends JavaPlugin implements Listener {
                     leftOver.setAmount(item.getAmount()-1);
                     item.setAmount(1);
                     player.getInventory().addItem(leftOver);
+                }
+                if(!craftMatrix[num].getItemMeta().hasLore()){
+                    otherMega = false;
                 }
             } else {
                 if(bundleMaterial == null) {
@@ -132,9 +140,14 @@ public class MainClass extends JavaPlugin implements Listener {
         if(bundleMaterial == null) {
             return;
         }
-        if(mega) {
+        if(mega && otherMega) {
             e.getInventory().setResult(getBundle(bundleMaterial, "mega"));
-        } else {
+        }
+        else if(mega && !otherMega) {
+            return;
+        }else if(!mega && otherMega) {
+            return;
+        }else {
             e.getInventory().setResult(getBundle(bundleMaterial, "bundle"));
         }
 
@@ -189,6 +202,7 @@ public class MainClass extends JavaPlugin implements Listener {
 
         //This goes through each craft matrix and checks that they are equal to the recipe given?? needs testing
         int num = 0;
+        boolean otherMega = true;
         for(String s : recipeInfo) {
             if(craftMatrix[num] == null) {
                 return;
@@ -196,6 +210,11 @@ public class MainClass extends JavaPlugin implements Listener {
             if(!s.equalsIgnoreCase("BUNDLE_ITEM")) {
                 if(craftMatrix[num].getType() != Material.valueOf(s)){
                     return;
+                }
+                if(craftMatrix[num].getItemMeta().hasLore()){
+                    otherMega = true;
+                } else {
+                    otherMega = false;
                 }
             } else {
                 if(bundleMaterial == null) {
@@ -234,11 +253,15 @@ public class MainClass extends JavaPlugin implements Listener {
         if(bundleMaterial == null) {
             return;
         }
-        if(mega) {
+        if(mega && otherMega) {
             Player player = (Player) e.getWhoClicked();
             player.getInventory().addItem(getBundle(bundleMaterial, "mega"));
             e.getInventory().clear();
-        } else {
+        }else if(mega && !otherMega) {
+            return;
+        }else if(!mega && otherMega){
+            return;
+        }else {
             Player player = (Player) e.getWhoClicked();
             player.getInventory().addItem(getBundle(bundleMaterial, "bundle"));
             e.getInventory().clear();
@@ -341,5 +364,15 @@ public class MainClass extends JavaPlugin implements Listener {
         }
 
         return sb.toString().trim();
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if(sender.hasPermission("adkbundleadmin")) {
+            reloadConfig();
+            sender.sendMessage("ADK-Bundles >>> Config Reloaded");
+            return true;
+        }
+        return false;
     }
 }
