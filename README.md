@@ -33,4 +33,4 @@ bundle-hide-enchantments: true
 mega-bundle-enchantments:
   - DURABILITY:1
   - FIRE_ASPECT:2
-mega-bundle-hide-enchantments: true```
+mega-bundle-hide-enchantments: true
