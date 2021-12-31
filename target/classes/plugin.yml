@@ -3,7 +3,3 @@ author: LivDoesDevStuf
 main: xyz.livdoesdevstuf.main.MainClass
 version: 1.0
 api-version: 1.13
-commands:
-  adkbundlereload:
-    description: reloads config
-    permission: adkbundleadmin
