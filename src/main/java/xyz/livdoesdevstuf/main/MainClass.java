@@ -91,15 +91,6 @@ public class MainClass extends JavaPlugin implements Listener, CommandExecutor {
                 if(craftMatrix[num].getType() != Material.valueOf(s)){
                     return;
                 }
-                if(craftMatrix[num].getAmount() > 1) {
-                    ItemStack item = craftMatrix[num];
-                    int amount = item.getAmount();
-                    Player player = (Player) e.getViewers().get(0);
-                    ItemStack leftOver = new ItemStack(Material.STRING);
-                    leftOver.setAmount(item.getAmount()-1);
-                    item.setAmount(1);
-                    player.getInventory().addItem(leftOver);
-                }
                 if(!craftMatrix[num].getItemMeta().hasLore()){
                     otherMega = false;
                 }
@@ -156,6 +147,9 @@ public class MainClass extends JavaPlugin implements Listener, CommandExecutor {
 
     @EventHandler
     public void onCraftComplete(InventoryClickEvent e) {
+        if(!getConfig().getStringList("world-whitelist").contains(e.getViewers().get(0).getWorld().getName())) {
+            return;
+        }
         if(e.getInventory().getType() != InventoryType.WORKBENCH) {
             return;
         }
@@ -211,6 +205,14 @@ public class MainClass extends JavaPlugin implements Listener, CommandExecutor {
                 if(craftMatrix[num].getType() != Material.valueOf(s)){
                     return;
                 }
+                if(craftMatrix[num].getAmount() > 1) {
+                    ItemStack item = craftMatrix[num];
+                    int amount = item.getAmount();
+                    Player player = (Player) e.getViewers().get(0);
+                    ItemStack leftOver = new ItemStack(Material.STRING);
+                    leftOver.setAmount(item.getAmount()-1);
+                    player.getInventory().addItem(leftOver);
+                }
                 if(craftMatrix[num].getItemMeta().hasLore()){
                     otherMega = true;
                 } else {
@@ -243,9 +245,6 @@ public class MainClass extends JavaPlugin implements Listener, CommandExecutor {
             }
         }
         //world, etc.
-        if(!getConfig().getStringList("world-whitelist").contains(e.getViewers().get(0).getWorld().getName())) {
-            return;
-        }
         if(checker == bundleSlots.size()) {
             mega = true;
         }
