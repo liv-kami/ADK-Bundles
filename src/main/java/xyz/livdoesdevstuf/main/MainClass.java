@@ -2,14 +2,10 @@ package xyz.livdoesdevstuf.main;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
@@ -23,7 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainClass extends JavaPlugin implements Listener, CommandExecutor {
+public class MainClass extends JavaPlugin implements Listener {
 
     public static Plugin plugin;
     public static Plugin getPlugin() {return plugin;}
@@ -35,7 +31,6 @@ public class MainClass extends JavaPlugin implements Listener, CommandExecutor {
         }
         getLogger().info("ADK-Bundles >>> Plugin Enabled");
         plugin.getServer().getPluginManager().registerEvents(this, this);
-        getCommand("adkbundlereload").setExecutor(this);
         saveDefaultConfig();
         reloadConfig();
     }
@@ -90,15 +85,6 @@ public class MainClass extends JavaPlugin implements Listener, CommandExecutor {
             if(!s.equalsIgnoreCase("BUNDLE_ITEM")) {
                 if(craftMatrix[num].getType() != Material.valueOf(s)){
                     return;
-                }
-                if(craftMatrix[num].getAmount() > 1) {
-                    ItemStack item = craftMatrix[num];
-                    int amount = item.getAmount();
-                    Player player = (Player) e.getViewers().get(0);
-                    ItemStack leftOver = new ItemStack(Material.STRING);
-                    leftOver.setAmount(item.getAmount()-1);
-                    item.setAmount(1);
-                    player.getInventory().addItem(leftOver);
                 }
                 if(!craftMatrix[num].getItemMeta().hasLore()){
                     otherMega = false;
@@ -156,6 +142,9 @@ public class MainClass extends JavaPlugin implements Listener, CommandExecutor {
 
     @EventHandler
     public void onCraftComplete(InventoryClickEvent e) {
+        if(!getConfig().getStringList("world-whitelist").contains(e.getViewers().get(0).getWorld().getName())) {
+            return;
+        }
         if(e.getInventory().getType() != InventoryType.WORKBENCH) {
             return;
         }
@@ -211,6 +200,14 @@ public class MainClass extends JavaPlugin implements Listener, CommandExecutor {
                 if(craftMatrix[num].getType() != Material.valueOf(s)){
                     return;
                 }
+                if(craftMatrix[num].getAmount() > 1) {
+                    ItemStack item = craftMatrix[num];
+                    int amount = item.getAmount();
+                    Player player = (Player) e.getViewers().get(0);
+                    ItemStack leftOver = new ItemStack(Material.STRING);
+                    leftOver.setAmount(item.getAmount()-1);
+                    player.getInventory().addItem(leftOver);
+                }
                 if(craftMatrix[num].getItemMeta().hasLore()){
                     otherMega = true;
                 } else {
@@ -243,9 +240,6 @@ public class MainClass extends JavaPlugin implements Listener, CommandExecutor {
             }
         }
         //world, etc.
-        if(!getConfig().getStringList("world-whitelist").contains(e.getViewers().get(0).getWorld().getName())) {
-            return;
-        }
         if(checker == bundleSlots.size()) {
             mega = true;
         }
@@ -366,13 +360,4 @@ public class MainClass extends JavaPlugin implements Listener, CommandExecutor {
         return sb.toString().trim();
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if(sender.hasPermission("adkbundleadmin")) {
-            reloadConfig();
-            sender.sendMessage("ADK-Bundles >>> Config Reloaded");
-            return true;
-        }
-        return false;
-    }
 }
