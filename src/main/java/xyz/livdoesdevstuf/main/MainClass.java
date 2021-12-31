@@ -2,14 +2,10 @@ package xyz.livdoesdevstuf.main;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
@@ -23,7 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainClass extends JavaPlugin implements Listener, CommandExecutor {
+public class MainClass extends JavaPlugin implements Listener {
 
     public static Plugin plugin;
     public static Plugin getPlugin() {return plugin;}
@@ -35,7 +31,6 @@ public class MainClass extends JavaPlugin implements Listener, CommandExecutor {
         }
         getLogger().info("ADK-Bundles >>> Plugin Enabled");
         plugin.getServer().getPluginManager().registerEvents(this, this);
-        getCommand("adkbundlereload").setExecutor(this);
         saveDefaultConfig();
         reloadConfig();
     }
@@ -365,13 +360,4 @@ public class MainClass extends JavaPlugin implements Listener, CommandExecutor {
         return sb.toString().trim();
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if(sender.hasPermission("adkbundleadmin")) {
-            reloadConfig();
-            sender.sendMessage("ADK-Bundles >>> Config Reloaded");
-            return true;
-        }
-        return false;
-    }
 }
