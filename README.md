@@ -1,5 +1,7 @@
 # ADK-Bundles
 Here is a copy of the default config, it should be fairly self explanitory
+
+NOTE: if you wish to have no enchants on an item, leave an empty - line, do not remove it entirely
 ```
 world-whitelist:
   - world
