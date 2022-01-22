@@ -9,8 +9,13 @@ recipe:
   - BUNDLE_ITEM:BUNDLE_ITEM:BUNDLE_ITEM
   - STRING:BUNDLE_ITEM:STRING
 #################################################
-bundle-name: '&f%item% Bundle'
-mega-bundle-name: '&f%item% Mega Bundle'
+plural-list:
+  - BREAD
+  - GLASS
+bundle-name: '&f%item%s Bundle'
+mega-bundle-name: '&f%item%s Mega Bundle'
+plural-bundle-name: '&f%item% Bundle'
+plural-mega-bundle-name: '&f%item%s Mega Bundle'
 #################################################
 bundle-lore: #DO NOT LEAVE THIS EMPTY --- likely will cause issues
   - "&fLore 1"
@@ -31,3 +36,6 @@ mega-bundle-enchantments:
   - DURABILITY:1
   - FIRE_ASPECT:2
 mega-bundle-hide-enchantments: true
+##################################################
+disabled-bundle-materials:
+  - CHEST

@@ -102,6 +102,9 @@ public class MainClass extends JavaPlugin implements Listener {
         boolean mega = false;
         int checker = 0;
         for(int i : bundleSlots) {
+            if(getConfig().getStringList("disabled-bundle-materials").contains(craftMatrix[i].getType().toString())) {
+                return;
+            }
             if(craftMatrix[i].getType() == Material.AIR) {
                 return;
             }
@@ -308,7 +311,11 @@ public class MainClass extends JavaPlugin implements Listener {
             if(getConfig().getBoolean("bundle-hide-enchantments")) {
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
-            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString("bundle-name").replaceAll("%item%", toTitleCase(mat.toString()))));
+            if(getConfig().getStringList("plural-bundle-name").contains(mat.toString())) {
+                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString("plural-bundle-name").replaceAll("%item%", toTitleCase(mat.toString()))));;
+            }else {
+                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString("bundle-name").replaceAll("%item%", toTitleCase(mat.toString()))));
+            }
         } else if(which.equalsIgnoreCase("mega")) {
             for(String s : getConfig().getStringList("mega-bundle-lore")) {
                 lore.add(ChatColor.translateAlternateColorCodes('&', s));
@@ -321,7 +328,12 @@ public class MainClass extends JavaPlugin implements Listener {
             if(getConfig().getBoolean("mega-bundle-hide-enchantments")) {
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
-            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString("mega-bundle-name").replaceAll("%item%", toTitleCase(mat.toString()))));
+
+            if(getConfig().getStringList("plural-mega-bundle-name").contains(mat.toString())) {
+                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString("plural-mega-bundle-name").replaceAll("%item%", toTitleCase(mat.toString()))));;
+            }else {
+                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString("mega-bundle-name").replaceAll("%item%", toTitleCase(mat.toString()))));
+            }
         }
 
         if(cmodelNum != 0) {
