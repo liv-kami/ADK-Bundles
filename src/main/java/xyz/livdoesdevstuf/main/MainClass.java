@@ -145,10 +145,10 @@ public class MainClass extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onCraftComplete(InventoryClickEvent e) {
-        if(!getConfig().getStringList("world-whitelist").contains(e.getViewers().get(0).getWorld().getName())) {
+        if(e.getInventory().getType() != InventoryType.WORKBENCH) {
             return;
         }
-        if(e.getInventory().getType() != InventoryType.WORKBENCH) {
+        if(!getConfig().getStringList("world-whitelist").contains(e.getViewers().get(0).getWorld().getName())) {
             return;
         }
         if(e.getSlot() != 0) {
@@ -229,6 +229,9 @@ public class MainClass extends JavaPlugin implements Listener {
         boolean mega = false;
         int checker = 0;
         for(int i : bundleSlots) {
+            if(getConfig().getStringList("disabled-bundle-materials").contains(craftMatrix[i].getType().toString())) {
+                return;
+            }
             if(craftMatrix[i].getType() == Material.AIR) {
                 return;
             }
@@ -260,7 +263,7 @@ public class MainClass extends JavaPlugin implements Listener {
             return;
         }else {
             Player player = (Player) e.getWhoClicked();
-            player.getInventory().addItem(getBundle(bundleMaterial, "bundle"));
+            player.setItemOnCursor(getBundle(bundleMaterial, "bundle"));
             e.getInventory().clear();
         }
         //check recipe "matches" the shape of the recipe in config
