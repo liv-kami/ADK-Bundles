@@ -211,7 +211,7 @@ public class MainClass extends JavaPlugin implements Listener {
                     leftOver.setAmount(item.getAmount()-1);
                     player.getInventory().addItem(leftOver);
                 }
-                if(!craftMatrix[num].getItemMeta().getDisplayName().contains(getConfig().getString("mega-bundle-name"))){
+                if(!craftMatrix[num].getItemMeta().getDisplayName().contains(getConfig().getString("bundle-name"))){
                     otherMega = true;
                 } else {
                     otherMega = false;
