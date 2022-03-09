@@ -253,6 +253,7 @@ public class MainClass extends JavaPlugin implements Listener {
         if(bundleMaterial == null) {
             return;
         }
+        mega = false;
         if(mega && otherMega) {
             Player player = (Player) e.getWhoClicked();
             player.getInventory().addItem(getBundle(bundleMaterial, "mega"));
