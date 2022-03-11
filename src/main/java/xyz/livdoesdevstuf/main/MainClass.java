@@ -129,6 +129,8 @@ public class MainClass extends JavaPlugin implements Listener {
         if(bundleMaterial == null) {
             return;
         }
+        mega = false;
+        otherMega = false;
         if(mega && otherMega) {
             e.getInventory().setResult(getBundle(bundleMaterial, "mega"));
         }
@@ -254,10 +256,12 @@ public class MainClass extends JavaPlugin implements Listener {
             return;
         }
         mega = false;
+        otherMega = false;
         if(mega && otherMega) {
             Player player = (Player) e.getWhoClicked();
             player.getInventory().addItem(getBundle(bundleMaterial, "mega"));
             e.getInventory().clear();
+            return;
         }else if(mega && !otherMega) {
             return;
         }else if(!mega && otherMega){
@@ -266,6 +270,7 @@ public class MainClass extends JavaPlugin implements Listener {
             Player player = (Player) e.getWhoClicked();
             player.setItemOnCursor(getBundle(bundleMaterial, "bundle"));
             e.getInventory().clear();
+            return;
         }
         //check recipe "matches" the shape of the recipe in config
         //check full stack, world, etc.
