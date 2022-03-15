@@ -1,5 +1,9 @@
 name: ADK-Bundles
 author: LivDoesDevStuf
 main: xyz.livdoesdevstuf.main.MainClass
+<<<<<<< Updated upstream
 version: 1.6.3
+=======
+version: 1.7
+>>>>>>> Stashed changes
 api-version: 1.13

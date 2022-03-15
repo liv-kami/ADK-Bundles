@@ -77,7 +77,6 @@ public class MainClass extends JavaPlugin implements Listener {
 
         //This goes through each craft matrix and checks that they are equal to the recipe given?? needs testing
         int num = 0;
-        boolean otherMega = true;
         for(String s : recipeInfo) {
             if(craftMatrix[num] == null) {
                 return;
@@ -85,9 +84,6 @@ public class MainClass extends JavaPlugin implements Listener {
             if(!s.equalsIgnoreCase("BUNDLE_ITEM")) {
                 if(craftMatrix[num].getType() != Material.valueOf(s)){
                     return;
-                }
-                if(!craftMatrix[num].getItemMeta().hasLore()){
-                    otherMega = false;
                 }
             } else {
                 if(bundleMaterial == null) {
@@ -114,7 +110,9 @@ public class MainClass extends JavaPlugin implements Listener {
             if(craftMatrix[i].getAmount() != craftMatrix[i].getMaxStackSize()) {
                 return;
             }
-            if(craftMatrix[i].getItemMeta().hasLore()) {
+            if(craftMatrix[i].getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.translateAlternateColorCodes('&', getConfig().getString("bundle-name").replaceAll("%item%", toTitleCase(bundleMaterial.toString()))))) {
+                checker += 1;
+            } else if(craftMatrix[i].getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.translateAlternateColorCodes('&', getConfig().getString("plural-bundle-name").replaceAll("%item%", toTitleCase(bundleMaterial.toString()))))) {
                 checker += 1;
             }
         }
@@ -129,15 +127,14 @@ public class MainClass extends JavaPlugin implements Listener {
         if(bundleMaterial == null) {
             return;
         }
+<<<<<<< Updated upstream
         mega = false;
         otherMega = false;
         if(mega && otherMega) {
+=======
+        if(mega) {
+>>>>>>> Stashed changes
             e.getInventory().setResult(getBundle(bundleMaterial, "mega"));
-        }
-        else if(mega && !otherMega) {
-            return;
-        }else if(!mega && otherMega) {
-            return;
         }else {
             e.getInventory().setResult(getBundle(bundleMaterial, "bundle"));
         }
@@ -196,7 +193,6 @@ public class MainClass extends JavaPlugin implements Listener {
 
         //This goes through each craft matrix and checks that they are equal to the recipe given?? needs testing
         int num = 0;
-        boolean otherMega = true;
         for(String s : recipeInfo) {
             if(craftMatrix[num] == null) {
                 return;
@@ -212,11 +208,6 @@ public class MainClass extends JavaPlugin implements Listener {
                     ItemStack leftOver = new ItemStack(Material.STRING);
                     leftOver.setAmount(item.getAmount()-1);
                     player.getInventory().addItem(leftOver);
-                }
-                if(!craftMatrix[num].getItemMeta().getDisplayName().equalsIgnoreCase(getConfig().getString("bundle-name"))){
-                    otherMega = true;
-                } else {
-                    otherMega = false;
                 }
             } else {
                 if(bundleMaterial == null) {
@@ -243,7 +234,9 @@ public class MainClass extends JavaPlugin implements Listener {
             if(craftMatrix[i].getAmount() != craftMatrix[i].getMaxStackSize()) {
                 return;
             }
-            if(craftMatrix[i].getItemMeta().hasLore()) {
+            if(craftMatrix[i].getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.translateAlternateColorCodes('&', getConfig().getString("bundle-name").replaceAll("%item%", toTitleCase(bundleMaterial.toString()))))) {
+                checker += 1;
+            } else if(craftMatrix[i].getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.translateAlternateColorCodes('&', getConfig().getString("plural-bundle-name").replaceAll("%item%", toTitleCase(bundleMaterial.toString()))))) {
                 checker += 1;
             }
         }
@@ -255,6 +248,7 @@ public class MainClass extends JavaPlugin implements Listener {
         if(bundleMaterial == null) {
             return;
         }
+<<<<<<< Updated upstream
         mega = false;
         otherMega = false;
         if(mega && otherMega) {
@@ -266,6 +260,12 @@ public class MainClass extends JavaPlugin implements Listener {
             return;
         }else if(!mega && otherMega){
             return;
+=======
+        if(mega) {
+            Player player = (Player) e.getWhoClicked();
+            player.getInventory().addItem(getBundle(bundleMaterial, "mega"));
+            e.getInventory().clear();
+>>>>>>> Stashed changes
         }else {
             Player player = (Player) e.getWhoClicked();
             player.setItemOnCursor(getBundle(bundleMaterial, "bundle"));
