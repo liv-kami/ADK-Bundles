@@ -77,6 +77,8 @@ public class MainClass extends JavaPlugin implements Listener {
 
         //This goes through each craft matrix and checks that they are equal to the recipe given?? needs testing
         int num = 0;
+        int otherCheck = 0;
+        int otherMatCount = 0;
         for(String s : recipeInfo) {
             if(craftMatrix[num] == null) {
                 return;
@@ -85,6 +87,12 @@ public class MainClass extends JavaPlugin implements Listener {
                 if(craftMatrix[num].getType() != Material.valueOf(s)){
                     return;
                 }
+                if(craftMatrix[num].getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.translateAlternateColorCodes('&', getConfig().getString("bundle-name").replaceAll("%item%", toTitleCase(Material.valueOf(s).toString()))))) {
+                    otherCheck += 1;
+                } else if(craftMatrix[num].getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.translateAlternateColorCodes('&', getConfig().getString("plural-bundle-name").replaceAll("%item%", toTitleCase(Material.valueOf(s).toString()))))) {
+                    otherCheck += 1;
+                }
+                otherMatCount += 1;
             } else {
                 if(bundleMaterial == null) {
                     bundleMaterial = craftMatrix[num].getType();
@@ -96,6 +104,7 @@ public class MainClass extends JavaPlugin implements Listener {
 
         //check that all bundleMats are the same material, then check they are all full stack
         boolean mega = false;
+        boolean otherMega = false;
         int checker = 0;
         for(int i : bundleSlots) {
             if(getConfig().getStringList("disabled-bundle-materials").contains(craftMatrix[i].getType().toString())) {
@@ -116,9 +125,13 @@ public class MainClass extends JavaPlugin implements Listener {
                 checker += 1;
             }
         }
+
         //world, etc.
         if(!getConfig().getStringList("world-whitelist").contains(e.getViewers().get(0).getWorld().getName())) {
             return;
+        }
+        if(otherCheck == otherMatCount) {
+            otherMega = true;
         }
         if(checker == bundleSlots.size()) {
             mega = true;
@@ -127,18 +140,16 @@ public class MainClass extends JavaPlugin implements Listener {
         if(bundleMaterial == null) {
             return;
         }
-<<<<<<< Updated upstream
-        mega = false;
-        otherMega = false;
         if(mega && otherMega) {
-=======
-        if(mega) {
->>>>>>> Stashed changes
             e.getInventory().setResult(getBundle(bundleMaterial, "mega"));
-        }else {
+        } else if(otherMega && !mega) {
+            return;
+        } else if (!otherMega && mega) {
+            return;
+        }
+        else {
             e.getInventory().setResult(getBundle(bundleMaterial, "bundle"));
         }
-
         //show result as bundle
     }
 
@@ -193,6 +204,8 @@ public class MainClass extends JavaPlugin implements Listener {
 
         //This goes through each craft matrix and checks that they are equal to the recipe given?? needs testing
         int num = 0;
+        int otherCheck = 0;
+        int otherMatCount = 0;
         for(String s : recipeInfo) {
             if(craftMatrix[num] == null) {
                 return;
@@ -209,6 +222,12 @@ public class MainClass extends JavaPlugin implements Listener {
                     leftOver.setAmount(item.getAmount()-1);
                     player.getInventory().addItem(leftOver);
                 }
+                if(craftMatrix[num].getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.translateAlternateColorCodes('&', getConfig().getString("bundle-name").replaceAll("%item%", toTitleCase(Material.valueOf(s).toString()))))) {
+                    otherCheck += 1;
+                } else if(craftMatrix[num].getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.translateAlternateColorCodes('&', getConfig().getString("plural-bundle-name").replaceAll("%item%", toTitleCase(Material.valueOf(s).toString()))))) {
+                    otherCheck += 1;
+                }
+                otherMatCount += 1;
             } else {
                 if(bundleMaterial == null) {
                     bundleMaterial = craftMatrix[num].getType();
@@ -220,6 +239,7 @@ public class MainClass extends JavaPlugin implements Listener {
 
         //check that all bundleMats are the same material, then check they are all full stack
         boolean mega = false;
+        boolean otherMega = false;
         int checker = 0;
         for(int i : bundleSlots) {
             if(getConfig().getStringList("disabled-bundle-materials").contains(craftMatrix[i].getType().toString())) {
@@ -240,6 +260,9 @@ public class MainClass extends JavaPlugin implements Listener {
                 checker += 1;
             }
         }
+        if(otherCheck == otherMatCount) {
+            otherMega = true;
+        }
         //world, etc.
         if(checker == bundleSlots.size()) {
             mega = true;
@@ -248,24 +271,15 @@ public class MainClass extends JavaPlugin implements Listener {
         if(bundleMaterial == null) {
             return;
         }
-<<<<<<< Updated upstream
-        mega = false;
-        otherMega = false;
         if(mega && otherMega) {
             Player player = (Player) e.getWhoClicked();
-            player.getInventory().addItem(getBundle(bundleMaterial, "mega"));
+            player.setItemOnCursor(getBundle(bundleMaterial, "mega'"));
             e.getInventory().clear();
             return;
-        }else if(mega && !otherMega) {
+        } else if(otherMega && !mega) {
             return;
-        }else if(!mega && otherMega){
+        } else if (!otherMega && mega) {
             return;
-=======
-        if(mega) {
-            Player player = (Player) e.getWhoClicked();
-            player.getInventory().addItem(getBundle(bundleMaterial, "mega"));
-            e.getInventory().clear();
->>>>>>> Stashed changes
         }else {
             Player player = (Player) e.getWhoClicked();
             player.setItemOnCursor(getBundle(bundleMaterial, "bundle"));

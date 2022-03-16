@@ -6,11 +6,7 @@
 
     <groupId>xyz.livdoesdevstuf</groupId>
     <artifactId>ADK-Bundles</artifactId>
-<<<<<<< Updated upstream
-    <version>1.6.3</version>
-=======
-    <version>1.7</version>
->>>>>>> Stashed changes
+    <version>1.8</version>
 
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
