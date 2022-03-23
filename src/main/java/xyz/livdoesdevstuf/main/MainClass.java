@@ -273,7 +273,7 @@ public class MainClass extends JavaPlugin implements Listener {
         }
         if(mega && otherMega) {
             Player player = (Player) e.getWhoClicked();
-            player.setItemOnCursor(getBundle(bundleMaterial, "mega'"));
+            player.setItemOnCursor(getBundle(bundleMaterial, "mega"));
             e.getInventory().clear();
             return;
         } else if(otherMega && !mega) {
