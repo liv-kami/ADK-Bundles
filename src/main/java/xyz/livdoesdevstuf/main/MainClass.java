@@ -334,7 +334,7 @@ public class MainClass extends JavaPlugin implements Listener {
             if(getConfig().getBoolean("bundle-hide-enchantments")) {
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
-            if(getConfig().getStringList("plural-bundle-name").contains(mat.toString())) {
+            if(getConfig().getStringList("plural-list").contains(mat.toString())) {
                 meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString("plural-bundle-name").replaceAll("%item%", toTitleCase(mat.toString()))));;
             }else {
                 meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString("bundle-name").replaceAll("%item%", toTitleCase(mat.toString()))));
